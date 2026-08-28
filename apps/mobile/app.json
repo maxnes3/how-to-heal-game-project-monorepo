@@ -1,0 +1,24 @@
+{
+  "expo": {
+    "name": "How To Heal?!",
+    "slug": "how-to-heal",
+    "version": "1.0.0",
+    "orientation": "portain",
+    "userInterfaceStyle": "dark",
+    "scheme": "howtoheal",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.howtoheal.game"
+    },
+    "android": {
+      "package": "com.howtoheal.game",
+      "predictiveBackGestureEnabled": false
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}
