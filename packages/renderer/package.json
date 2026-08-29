@@ -1,7 +1,24 @@
 {
   "name": "@game/renderer",
-  "version": "0.0.1",
+  "version": "1.0.0",
+  "private": true,
   "type": "module",
   "main": "./dist/index.js",
-  "types": "./dist/index.d.ts"
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "pixi.js": "^8.20.1"
+  },
+  "devDependencies": {
+    "typescript": "6.0.3"
+  }
 }

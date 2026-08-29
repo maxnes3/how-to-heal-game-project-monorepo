@@ -1,5 +1,11 @@
+import { Panel } from '@app/renderer/components';
+
 const MainScreen = () => {
-  return <div></div>;
+  return (
+    <div>
+      <Panel></Panel>
+    </div>
+  );
 };
 
 export default MainScreen;

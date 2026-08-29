@@ -1,5 +1,7 @@
+import { GameCanvas } from '@app/renderer/components';
+
 const GameScreen = () => {
-  return <div></div>;
+  return <GameCanvas />;
 };
 
 export default GameScreen;

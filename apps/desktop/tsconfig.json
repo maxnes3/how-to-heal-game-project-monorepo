@@ -3,7 +3,10 @@
   "compilerOptions": {
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "types": ["node"],
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "paths": {
+      "@app/*": ["./src/*"]
+    }
   },
   "include": [
     "src/**/*.ts",
