@@ -7,7 +7,7 @@ export default defineConfig({
 
   resolve: {
     alias: {
-      '@game/renderer': path.resolve(__dirname, '../../packages/renderer/dist/index.js'),
+      '@app': path.resolve(__dirname, './src'),
     },
   },
 });

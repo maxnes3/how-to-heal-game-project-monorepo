@@ -1,7 +1,7 @@
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { PixiGameRenderer } from '@game/renderer';
 
-const GameCanvas = () => {
+const GameCanvas: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -21,4 +21,4 @@ const GameCanvas = () => {
   return <div ref={containerRef} className="game-container" />;
 };
 
-export default GameCanvas;
+export default React.memo(GameCanvas);

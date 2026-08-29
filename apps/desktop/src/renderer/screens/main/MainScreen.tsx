@@ -1,10 +1,20 @@
-import { Panel } from '@app/renderer/components';
+import { useNavigate } from 'react-router';
+import { Button, Panel, Text } from '@app/renderer/components';
 
 const MainScreen = () => {
+  const navigate = useNavigate();
+
+  const handlePlayClick = () => {
+    navigate('/game');
+  };
+
   return (
-    <div>
-      <Panel></Panel>
-    </div>
+    <Panel>
+      <Text>Меню</Text>
+      <Button onClick={handlePlayClick}>
+        <Text>Играть</Text>
+      </Button>
+    </Panel>
   );
 };
 
