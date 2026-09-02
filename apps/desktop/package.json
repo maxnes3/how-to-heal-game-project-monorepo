@@ -5,6 +5,7 @@
   "main": ".vite/build/main.js",
   "scripts": {
     "start": "electron-forge start",
+    "dev": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish"
@@ -38,6 +39,7 @@
     "electron-squirrel-startup": "^1.0.1",
     "react": "19.2.8",
     "react-dom": "19.2.8",
+    "react-i18next": "^17.0.13",
     "react-router": "^8.3.0",
     "scheduler": "^0.27.0"
   }

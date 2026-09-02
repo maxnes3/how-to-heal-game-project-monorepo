@@ -1,5 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router';
+import '@game/i18n';
 import { GameScreen, MainScreen, SettingsScreen } from './screens';
+import './globals.css';
 
 export default function App() {
   return (

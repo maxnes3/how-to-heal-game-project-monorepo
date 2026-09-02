@@ -1,14 +1,14 @@
-import i18n from 'i18next';
+import { i18n } from './instance.js';
 import { resources } from './resources.js';
 
-i18n.init({
-  lng: 'en',
-  fallbackLng: 'en',
-  resources,
-  defaultNS: 'common',
-  interpolation: {
-    escapeValue: false,
-  },
-});
-
-export default i18n;
+export const initializeI18n = async (): Promise<void> => {
+  await i18n.init({
+    lng: 'en',
+    fallbackLng: 'en',
+    resources,
+    defaultNS: 'common',
+    interpolation: {
+      escapeValue: false,
+    },
+  });
+};

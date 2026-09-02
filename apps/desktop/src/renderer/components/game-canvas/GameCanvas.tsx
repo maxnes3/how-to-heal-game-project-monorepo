@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { PixiGameRenderer } from '@game/renderer';
+import styles from './GameCanvas.module.css';
 
 const GameCanvas: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -18,7 +19,7 @@ const GameCanvas: React.FC = () => {
     };
   }, []);
 
-  return <div ref={containerRef} className="game-container" />;
+  return <div ref={containerRef} className={styles.game_canvas} />;
 };
 
 export default React.memo(GameCanvas);
