@@ -3,8 +3,8 @@
 ## Desktop
 
 ### Run Developer Mode
-```
+```bash
 pnpm install
 pnpm turbo run dev --filter=@game/desktop
-```bash
+```
 > requirements: node 22+, pnpm
