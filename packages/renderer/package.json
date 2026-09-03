@@ -11,15 +11,20 @@
       "import": "./dist/index.js"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "build": "tsc",
-    "dev": "tsc --watch --preserveWatchOutput"
+    "build": "tsup",
+    "dev": "tsup --watch"
   },
   "dependencies": {
+    "@game/i18n": "workspace:*",
+    "@game/theme": "workspace:*",
     "pixi.js": "^8.20.1"
   },
   "devDependencies": {
+    "tsup": "^8.5.1",
     "typescript": "6.0.3"
   }
 }

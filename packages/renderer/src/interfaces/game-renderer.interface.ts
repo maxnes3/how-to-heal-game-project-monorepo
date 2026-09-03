@@ -1,4 +1,4 @@
 export interface GameRenderer {
-  initialize(container: HTMLElement): void;
+  initialize(container: HTMLElement): Promise<void>;
   destroy(): void;
 }

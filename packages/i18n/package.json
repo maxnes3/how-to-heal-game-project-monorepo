@@ -14,10 +14,11 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc",
-    "dev": "tsc --watch --preserveWatchOutput"
+    "build": "tsup",
+    "dev": "tsup --watch"
   },
   "devDependencies": {
+    "tsup": "^8.5.1",
     "typescript": "6.0.3"
   },
   "dependencies": {

@@ -1,11 +1,9 @@
 export class Card {
   private _id: string;
-  private name: string;
-  private description: string;
+  private _translationKey: string;
 
-  constructor(_id: string, name: string, description: string) {
-    this._id = _id;
-    this.name = name;
-    this.description = description;
+  constructor(id: string, translationKey: string) {
+    this._id = id;
+    this._translationKey = translationKey;
   }
 }

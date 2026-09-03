@@ -1,0 +1,13 @@
+{
+    "game": {
+        "title": "How to Heal?!"
+    },
+    "menu": {
+        "open_menu": "Меню",
+        "start_game": "Начать игру",
+        "resume_game": "Продолжить игру",
+        "settings": "Настройки",
+        "return_to_main_menu": "Вернуться в главное меню",
+        "exit": "Выйти"
+    }
+}

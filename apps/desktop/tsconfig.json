@@ -11,6 +11,7 @@
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
-    "forge.env.d.ts"
+    "src/renderer/types/**/*.d.ts",
+    "forge.env.d.ts",
   ]
 }

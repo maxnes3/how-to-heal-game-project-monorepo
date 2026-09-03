@@ -1,10 +1,15 @@
 interface Props {
   children?: React.ReactNode;
+  className?: string;
   onClick?: VoidFunction;
 }
 
-const Button: React.FC<Props> = ({ children, onClick }) => {
-  return <button onClick={onClick}>{children}</button>;
+const Button: React.FC<Props> = ({ children, className, onClick }) => {
+  return (
+    <button type="button" className={className} onClick={onClick}>
+      {children}
+    </button>
+  );
 };
 
 export default Button;

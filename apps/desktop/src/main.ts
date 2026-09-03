@@ -1,40 +1,25 @@
 import { app, BrowserWindow } from 'electron';
-import path from 'node:path';
 import started from 'electron-squirrel-startup';
+import { registerIpcHandlers } from './main/ipc';
+import { createMainWindow } from './main/window';
+import { registerKeyboardShortcuts } from './main/keyboard-shortcuts';
 
 if (started) {
   app.quit();
 }
 
-const createWindow = (): void => {
-  const mainWindow = new BrowserWindow({
-    fullscreen: true,
-    autoHideMenuBar: true,
-
-    webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
-
-      nodeIntegration: false,
-      contextIsolation: true,
-      sandbox: true,
-    },
-  });
-
-  if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
-    void mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
-  } else {
-    void mainWindow.loadFile(
-      path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`),
-    );
-  }
+const bootstrap = (): void => {
+  registerIpcHandlers();
+  const mainWindow = createMainWindow();
+  registerKeyboardShortcuts(mainWindow);
 };
 
 app.whenReady().then(() => {
-  createWindow();
+  bootstrap();
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow();
+      createMainWindow();
     }
   });
 });

@@ -4,7 +4,7 @@ import { Button, Panel, Text } from '@app/renderer/components';
 
 const MainScreen = () => {
   const navigate = useNavigate();
-  const { t } = useTranslation('common');
+  const { t } = useTranslation('ui');
 
   const handleStartGameClick = () => {
     navigate('/game');
@@ -15,7 +15,7 @@ const MainScreen = () => {
   };
 
   const handleExitClick = () => {
-    window.close();
+    window.electronAPI.app.quit();
   };
 
   return (

@@ -1,1 +1,1 @@
-export * from './shuffle-deck';
+export * from './shuffle-deck.use-case.js';

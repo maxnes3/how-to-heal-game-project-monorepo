@@ -1,7 +1,13 @@
-import { GameCanvas } from '@app/renderer/components';
+import React from 'react';
+import { GameContainer, OpenMenuModalButton } from '@app/renderer/components';
 
 const GameScreen = () => {
-  return <GameCanvas />;
+  return (
+    <>
+      <GameContainer />
+      <OpenMenuModalButton />
+    </>
+  );
 };
 
-export default GameScreen;
+export default React.memo(GameScreen);

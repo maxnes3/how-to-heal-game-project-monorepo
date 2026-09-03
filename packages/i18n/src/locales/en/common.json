@@ -1,10 +1,2 @@
 {
-    "game": {
-        "title": "How to Heal?!"
-    },
-    "menu": {
-        "start_game": "Start Game",
-        "settings": "Settings",
-        "exit": "Exit"
-    }
 }
