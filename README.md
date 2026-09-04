@@ -51,7 +51,7 @@ flowchart TB
 └── package.json
 ```
 
-## 🏰 Desktop
+## [🏰 Desktop](./apps/desktop/)
 
 ### Run Development Mode
 
@@ -64,7 +64,7 @@ pnpm turbo run dev --filter=@game/desktop
 
 ## 🧩 Packages
 
-### 📜 `@game/core`
+### [📜 `@game/core`](./packages/core/)
 
 Contains platform-independent game logic.
 
@@ -77,7 +77,7 @@ This package should not depend on:
 
 The goal is to keep the game domain independent from the UI platform.
 
-### 🐉 `@game/renderer`
+### [🐉 `@game/renderer`](./packages/renderer/)
 
 Contains the rendering abstraction and its implementation.
 
@@ -95,7 +95,7 @@ PixiJS implementation
 
 This allows the rendering implementation to be replaced in the future without changing the game domain.
 
-### 🌍 `@game/i18n`
+### [🌍 `@game/i18n`](./packages/i18n/)
 
 Shared localization package based on `i18next`.
 
@@ -104,7 +104,7 @@ Can be used by:
 * React through `react-i18next`
 * PixiJS renderer through the core `i18next` instance
 
-### 🦄 `@game/theme`
+### [🦄 `@game/theme`](./packages/theme/)
 
 Contains shared UI design tokens and theme definitions.
 
