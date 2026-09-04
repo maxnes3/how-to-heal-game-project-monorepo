@@ -7,4 +7,7 @@ export default defineConfig({
   dts: true,
   sourcemap: true,
   clean: true,
+  loader: {
+    '.json': 'json',
+  },
 });

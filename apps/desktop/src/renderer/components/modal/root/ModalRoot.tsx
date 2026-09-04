@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import styles from './ModalRoot.module.css';
 
 interface Props {
@@ -11,7 +12,7 @@ const ModalRoot: React.FC<Props> = ({ isOpen = false, children, className }) => 
     return null;
   }
 
-  return <div className={className || styles.modalRoot}>{children}</div>;
+  return <div className={classNames(styles.modalRoot, className)}>{children}</div>;
 };
 
 export default ModalRoot;

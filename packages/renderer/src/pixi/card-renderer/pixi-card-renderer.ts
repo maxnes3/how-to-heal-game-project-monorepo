@@ -1,6 +1,9 @@
 import { Container, Graphics, type FederatedPointerEvent } from 'pixi.js';
 import type { CardRenderer } from '../../interfaces';
 
+const DEFAULT_CARD_WIDTH = 180;
+const DEFAULT_CARD_HEIGHT = 252;
+
 export interface CardRendererOptions {
   width: number;
   height: number;
@@ -34,11 +37,14 @@ export class PixiCardRenderer implements CardRenderer {
     y: 0,
   };
 
-  public constructor(options: CardRendererOptions) {
-    this.draw(options);
+  public constructor(options?: CardRendererOptions) {
+    this.draw({
+      ...options,
+      width: options?.width ?? DEFAULT_CARD_WIDTH,
+      height: options?.height ?? DEFAULT_CARD_HEIGHT,
+    });
 
     this.container.addChild(this.graphics);
-
     this.initializeInteraction();
   }
 
@@ -112,9 +118,7 @@ export class PixiCardRenderer implements CardRenderer {
     }
 
     this.isDragging = false;
-
     this.container.zIndex = 0;
-
     this.applyTransform(this.initialTransform);
   };
 

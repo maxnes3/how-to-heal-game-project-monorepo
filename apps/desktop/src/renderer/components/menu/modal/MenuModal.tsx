@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { ModalEnum, useModal } from '@app/renderer/contexts';
+import { AppRoutesEnum } from '@app/renderer/routes';
 import { ModalRoot } from '../../modal';
 import { Button } from '../../button';
+import { Text } from '../../text';
 
 const MenuModal = () => {
   const { modal, openModal, closeModal } = useModal();
@@ -18,15 +20,21 @@ const MenuModal = () => {
   };
 
   const handleReturnToMainMenuClick = () => {
-    navigate('/');
+    navigate(AppRoutesEnum.MAIN);
     closeModal();
   };
 
   return (
     <ModalRoot isOpen={modal === ModalEnum.MENU}>
-      <Button onClick={handleResumeClick}>{t('menu.resume_game')}</Button>
-      <Button onClick={handleOpenSettingsClick}>{t('menu.open_settings')}</Button>
-      <Button onClick={handleReturnToMainMenuClick}>{t('menu.return_to_main_menu')}</Button>
+      <Button onClick={handleResumeClick}>
+        <Text>{t('menu.resume_game')}</Text>
+      </Button>
+      <Button onClick={handleOpenSettingsClick}>
+        <Text>{t('menu.settings')}</Text>
+      </Button>
+      <Button onClick={handleReturnToMainMenuClick}>
+        <Text>{t('menu.return_to_main_menu')}</Text>
+      </Button>
     </ModalRoot>
   );
 };

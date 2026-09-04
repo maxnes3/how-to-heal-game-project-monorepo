@@ -1,6 +1,6 @@
 {
     "game": {
-        "title": "How to Heal?!"
+        "name": "How to Heal?!"
     },
     "menu": {
         "open_menu": "Меню",
@@ -9,5 +9,9 @@
         "settings": "Настройки",
         "return_to_main_menu": "Вернуться в главное меню",
         "exit": "Выйти"
+    },
+    "settings": {
+        "back": "Назад",
+        "save": "Сохранить"
     }
 }

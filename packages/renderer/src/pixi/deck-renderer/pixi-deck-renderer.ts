@@ -14,13 +14,8 @@ export class PixiDeckRenderer implements DeckRenderer {
 
   private createCards(count: number): void {
     for (let index = 0; index < count; index++) {
-      const card = new PixiCardRenderer({
-        width: 180,
-        height: 252,
-      });
-
+      const card = new PixiCardRenderer();
       this.cards.push(card);
-
       this.container.addChild(card.container);
     }
   }
@@ -40,7 +35,6 @@ export class PixiDeckRenderer implements DeckRenderer {
 
     this.cards.forEach((card, index) => {
       const transform = this.calculateCardTransform(index, cardCount, startX, spacing);
-
       card.setTransform(transform);
     });
   }

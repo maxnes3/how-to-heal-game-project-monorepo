@@ -1,3 +1,11 @@
-.text_p {
+.textH1 {
+    color: black;
+}
+
+.textParagraph {
+    color: black;
+}
+
+.textSpan {
     color: black;
 }
