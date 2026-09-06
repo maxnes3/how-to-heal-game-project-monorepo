@@ -1,6 +1,10 @@
 import type { BrowserWindow } from 'electron';
 
 export const registerKeyboardShortcuts = (window: BrowserWindow): void => {
+  if (!MAIN_WINDOW_VITE_DEV_SERVER_URL) {
+    return;
+  }
+
   window.webContents.on('before-input-event', (event, input) => {
     const key = input.key.toLowerCase();
 

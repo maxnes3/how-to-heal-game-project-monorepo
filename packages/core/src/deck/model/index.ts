@@ -1,1 +1,1 @@
-export * from './deck.js';
+export * from './deck.model.js';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { Button, Panel, Text } from '@app/renderer/components';
+import { Button, Article, Text } from '@app/renderer/components';
 import { AppRoutesEnum } from '@app/renderer/routes';
 
 const MainScreen = () => {
@@ -21,7 +21,7 @@ const MainScreen = () => {
   };
 
   return (
-    <Panel>
+    <Article>
       <Text variant="h1">{t('game.name')}</Text>
       <Button onClick={handleStartGameClick}>
         <Text>{t('menu.start_game')}</Text>
@@ -32,7 +32,7 @@ const MainScreen = () => {
       <Button onClick={handleExitClick}>
         <Text>{t('menu.exit')}</Text>
       </Button>
-    </Panel>
+    </Article>
   );
 };
 

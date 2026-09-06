@@ -25,7 +25,7 @@ const MenuModal = () => {
   };
 
   return (
-    <ModalRoot isOpen={modal === ModalEnum.MENU}>
+    <ModalRoot isOpen={modal === ModalEnum.PAUSE}>
       <Button onClick={handleResumeClick}>
         <Text>{t('menu.resume_game')}</Text>
       </Button>

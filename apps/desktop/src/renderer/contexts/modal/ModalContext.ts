@@ -1,7 +1,7 @@
 import { createContext } from 'react';
 
 export enum ModalEnum {
-  MENU = 'menu',
+  PAUSE = 'pause',
   SETTINGS = 'settings',
 }
 

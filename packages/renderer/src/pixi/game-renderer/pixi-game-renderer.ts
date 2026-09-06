@@ -1,4 +1,6 @@
 import { Application } from 'pixi.js';
+import type { GameState } from '@game/core';
+import type { Store, Unsubscribe } from '@game/store';
 import { PixiDeckRenderer } from '../deck-renderer';
 import type { GameRenderer } from '../../interfaces';
 
@@ -8,6 +10,9 @@ export class PixiGameRenderer implements GameRenderer {
   private initPromise: Promise<void> | null = null;
   private destroyed = false;
   private resizeObserver: ResizeObserver | null = null;
+  private unsubscribe: Unsubscribe | null = null;
+
+  public constructor(private readonly store: Store<GameState>) {}
 
   public initialize(container: HTMLElement): Promise<void> {
     if (this.initPromise) {
@@ -15,15 +20,16 @@ export class PixiGameRenderer implements GameRenderer {
     }
 
     this.initPromise = this.initializeApplication(container);
-
     return this.initPromise;
   }
 
   public destroy(): void {
     this.destroyed = true;
 
-    this.resizeObserver?.disconnect();
+    this.unsubscribe?.();
+    this.unsubscribe = null;
 
+    this.resizeObserver?.disconnect();
     this.resizeObserver = null;
 
     if (!this.initPromise) {
@@ -62,9 +68,24 @@ export class PixiGameRenderer implements GameRenderer {
 
     this.app.stage.addChild(this.deckRenderer.container);
 
+    this.renderInitialState();
+    this.subscribeToState();
+
     this.layout();
 
     this.initializeResizeObserver(container);
+  }
+
+  private renderInitialState(): void {
+    const state = this.store.getState();
+
+    this.deckRenderer.render(state.player.handCards);
+  }
+
+  private subscribeToState(): void {
+    this.unsubscribe = this.store.subscribe((state) => {
+      this.deckRenderer.render(state.player.handCards);
+    });
   }
 
   private initializeResizeObserver(container: HTMLElement): void {

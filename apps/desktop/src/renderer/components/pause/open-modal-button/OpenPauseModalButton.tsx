@@ -1,21 +1,21 @@
 import { useTranslation } from 'react-i18next';
 import { useModal, ModalEnum } from '@app/renderer/contexts';
 import { Button } from '../../button';
-import styles from './OpenMenuModalButton.module.css';
+import styles from './OpenPauseModalButton.module.css';
 
-const OpenMenuModalButton = () => {
+const OpenPauseModalButton = () => {
   const { openModal } = useModal();
   const { t } = useTranslation('ui');
 
   const handleClick = () => {
-    openModal(ModalEnum.MENU);
+    openModal(ModalEnum.PAUSE);
   };
 
   return (
-    <Button className={styles.openMenuModalButton} onClick={handleClick}>
+    <Button className={styles.openPauseModalButton} onClick={handleClick}>
       {t('menu.open_menu')}
     </Button>
   );
 };
 
-export default OpenMenuModalButton;
+export default OpenPauseModalButton;

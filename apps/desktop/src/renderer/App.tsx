@@ -1,5 +1,5 @@
 import AppRoutes from './routes';
-import { MenuModal, ModalOverlay } from './components';
+import { ModalOverlay, PauseModal, SettingsModal } from './components';
 import { ModalProvider } from './contexts';
 import './globals.css';
 
@@ -8,7 +8,8 @@ export default function App() {
     <ModalProvider>
       <AppRoutes />
       <ModalOverlay>
-        <MenuModal />
+        <PauseModal />
+        <SettingsModal />
       </ModalOverlay>
     </ModalProvider>
   );

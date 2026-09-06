@@ -3,7 +3,7 @@ import styles from './ModalRoot.module.css';
 
 interface Props {
   isOpen: boolean;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   className?: string;
 }
 

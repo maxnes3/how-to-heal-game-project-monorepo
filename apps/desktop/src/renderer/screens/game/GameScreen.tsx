@@ -1,11 +1,11 @@
 import React from 'react';
-import { GameContainer, OpenMenuModalButton } from '@app/renderer/components';
+import { GameContainer, OpenPauseModalButton } from '@app/renderer/components';
 
 const GameScreen = () => {
   return (
     <>
       <GameContainer />
-      <OpenMenuModalButton />
+      <OpenPauseModalButton />
     </>
   );
 };

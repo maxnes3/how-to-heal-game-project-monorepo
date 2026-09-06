@@ -1,1 +1,1 @@
-# 🌍 @Game/I18n
+# 🚩 @Game/I18n

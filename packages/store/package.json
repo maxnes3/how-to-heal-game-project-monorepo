@@ -1,5 +1,5 @@
 {
-  "name": "@game/renderer",
+  "name": "@game/store",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -17,13 +17,6 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch"
-  },
-  "dependencies": {
-    "@game/core": "workspace:*",
-    "@game/i18n": "workspace:*",
-    "@game/store": "workspace:*",
-    "@game/theme": "workspace:*",
-    "pixi.js": "^8.20.1"
   },
   "devDependencies": {
     "tsup": "^8.5.1",

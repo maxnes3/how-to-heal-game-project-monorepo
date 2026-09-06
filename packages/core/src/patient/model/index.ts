@@ -1,1 +1,1 @@
-export * from './patient.js';
+export * from './patient.model.js';
