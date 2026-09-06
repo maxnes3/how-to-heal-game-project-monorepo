@@ -12,4 +12,12 @@ export class CardModel {
   public getId(): string {
     return this._id;
   }
+
+  public getTranslationKey(): string | undefined {
+    return this._translationKey;
+  }
+
+  public getSpriteKey(): string | undefined {
+    return this._spriteKey;
+  }
 }

@@ -26,6 +26,7 @@
     "pixi.js": "^8.20.1"
   },
   "devDependencies": {
+    "@types/node": "^26.4.1",
     "tsup": "^8.5.1",
     "typescript": "6.0.3"
   }

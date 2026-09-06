@@ -1,45 +1,49 @@
 import { Application } from 'pixi.js';
-import type { GameState } from '@game/core';
+import type { DeckState } from '@game/core';
 import type { Store, Unsubscribe } from '@game/store';
+import type { GameRenderer, GameRendererOptions } from '../../interfaces';
 import { PixiDeckRenderer } from '../deck-renderer';
-import type { GameRenderer } from '../../interfaces';
 
 export class PixiGameRenderer implements GameRenderer {
-  private readonly app = new Application();
-  private readonly deckRenderer = new PixiDeckRenderer();
-  private initPromise: Promise<void> | null = null;
-  private destroyed = false;
-  private resizeObserver: ResizeObserver | null = null;
-  private unsubscribe: Unsubscribe | null = null;
+  private readonly _app = new Application();
+  private readonly _deckStore: Store<DeckState>;
+  private readonly _deckRenderer: PixiDeckRenderer;
+  private _initPromise: Promise<void> | null = null;
+  private _destroyed = false;
+  private _resizeObserver: ResizeObserver | null = null;
+  private _unsubscribe: Unsubscribe | null = null;
 
-  public constructor(private readonly store: Store<GameState>) {}
+  public constructor(options: GameRendererOptions) {
+    this._deckStore = options.deckStore;
+    this._deckRenderer = new PixiDeckRenderer();
+  }
 
   public initialize(container: HTMLElement): Promise<void> {
-    if (this.initPromise) {
-      return this.initPromise;
+    if (this._initPromise) {
+      return this._initPromise;
     }
 
-    this.initPromise = this.initializeApplication(container);
-    return this.initPromise;
+    this._initPromise = this.initializeApplication(container);
+    return this._initPromise;
   }
 
   public destroy(): void {
-    this.destroyed = true;
+    this._destroyed = true;
 
-    this.unsubscribe?.();
-    this.unsubscribe = null;
+    this._unsubscribe?.();
+    this._unsubscribe = null;
 
-    this.resizeObserver?.disconnect();
-    this.resizeObserver = null;
+    this._resizeObserver?.disconnect();
+    this._resizeObserver = null;
 
-    if (!this.initPromise) {
+    if (!this._initPromise) {
       return;
     }
 
-    void this.initPromise.then(() => {
-      this.deckRenderer.destroy();
+    void this._initPromise.then(() => {
+      this._deckRenderer.destroy();
 
-      this.app.destroy(
+      this._app.destroy(
         {
           removeView: true,
         },
@@ -54,19 +58,19 @@ export class PixiGameRenderer implements GameRenderer {
   }
 
   private async initializeApplication(container: HTMLElement): Promise<void> {
-    await this.app.init({
+    await this._app.init({
       resizeTo: container,
       background: '#111111',
       antialias: true,
     });
 
-    if (this.destroyed) {
+    if (this._destroyed) {
       return;
     }
 
-    container.appendChild(this.app.canvas);
+    container.appendChild(this._app.canvas);
 
-    this.app.stage.addChild(this.deckRenderer.container);
+    this._app.stage.addChild(this._deckRenderer.container);
 
     this.renderInitialState();
     this.subscribeToState();
@@ -77,30 +81,30 @@ export class PixiGameRenderer implements GameRenderer {
   }
 
   private renderInitialState(): void {
-    const state = this.store.getState();
+    const state = this._deckStore.getState();
 
-    this.deckRenderer.render(state.player.handCards);
+    this._deckRenderer.render(state.handCards);
   }
 
   private subscribeToState(): void {
-    this.unsubscribe = this.store.subscribe((state) => {
-      this.deckRenderer.render(state.player.handCards);
+    this._unsubscribe = this._deckStore.subscribe((state) => {
+      this._deckRenderer.render(state.handCards);
     });
   }
 
   private initializeResizeObserver(container: HTMLElement): void {
-    this.resizeObserver = new ResizeObserver(() => {
-      if (this.destroyed) {
+    this._resizeObserver = new ResizeObserver(() => {
+      if (this._destroyed) {
         return;
       }
 
       this.layout();
     });
 
-    this.resizeObserver.observe(container);
+    this._resizeObserver.observe(container);
   }
 
   private layout(): void {
-    this.deckRenderer.layout(this.app.screen.width, this.app.screen.height);
+    this._deckRenderer.layout(this._app.screen.width, this._app.screen.height);
   }
 }

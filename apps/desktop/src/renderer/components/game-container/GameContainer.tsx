@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { PixiGameRenderer } from '@game/renderer';
-import { gameStore } from '@app/renderer/store';
+import { deckStore } from '@app/renderer/store';
 import styles from './GameContainer.module.css';
 
 const GameCanvas: React.FC = () => {
@@ -11,7 +11,9 @@ const GameCanvas: React.FC = () => {
       return;
     }
 
-    const renderer = new PixiGameRenderer(gameStore);
+    const renderer = new PixiGameRenderer({
+      deckStore,
+    });
     void renderer.initialize(containerRef.current);
 
     return () => {
