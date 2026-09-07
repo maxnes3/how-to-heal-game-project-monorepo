@@ -1,1 +1,1 @@
-export * from './pixi-card-renderer.js';
+export * from './pixi-card.renderer.js';

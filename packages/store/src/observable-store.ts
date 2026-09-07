@@ -1,16 +1,15 @@
 import type { StateListener, Unsubscribe, WritableStore } from './interfaces';
 
 export class ObservableStore<TState> implements WritableStore<TState> {
-  private state: TState;
-
-  private readonly listeners = new Set<StateListener<TState>>();
+  private _state: TState;
+  private readonly _listeners = new Set<StateListener<TState>>();
 
   public constructor(initialState: TState) {
-    this.state = initialState;
+    this._state = initialState;
   }
 
   public getState(): TState {
-    return this.state;
+    return this._state;
   }
 
   public setState(updater: TState): void;
@@ -18,28 +17,28 @@ export class ObservableStore<TState> implements WritableStore<TState> {
   public setState(updater: TState | ((previousState: TState) => TState)): void {
     const nextState =
       typeof updater === 'function'
-        ? (updater as (previousState: TState) => TState)(this.state)
+        ? (updater as (previousState: TState) => TState)(this._state)
         : updater;
 
-    if (Object.is(this.state, nextState)) {
+    if (Object.is(this._state, nextState)) {
       return;
     }
 
-    this.state = nextState;
+    this._state = nextState;
     this.emit();
   }
 
   public subscribe(listener: StateListener<TState>): Unsubscribe {
-    this.listeners.add(listener);
+    this._listeners.add(listener);
 
     return () => {
-      this.listeners.delete(listener);
+      this._listeners.delete(listener);
     };
   }
 
   private emit(): void {
-    for (const listener of this.listeners) {
-      listener(this.state);
+    for (const listener of this._listeners) {
+      listener(this._state);
     }
   }
 }

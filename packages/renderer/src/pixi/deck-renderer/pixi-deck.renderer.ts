@@ -1,29 +1,30 @@
 import { Container } from 'pixi.js';
 import type { CardModel } from '@game/core';
-import type { CardTransform, DeckRenderer } from '../../interfaces';
+import type { CardDropEvent, CardDropHandler, CardTransform, DeckRenderer } from '../../interfaces';
 import { PixiCardRenderer } from '../card-renderer';
-
-export type CardDropHandler = (card: CardModel) => void;
 
 export interface PixiDeckRendererOptions {
   onCardDrop?: CardDropHandler;
 }
 
 export class PixiDeckRenderer implements DeckRenderer {
-  private readonly _cards = new Map<string, PixiCardRenderer>();
-  public readonly container = new Container({
+  private readonly _container = new Container({
     sortableChildren: true,
   });
+  private readonly _cards = new Map<string, PixiCardRenderer>();
+  private readonly _onCardDrop?: CardDropHandler;
+
+  public constructor(options?: PixiDeckRendererOptions) {
+    this._onCardDrop = options?.onCardDrop;
+  }
 
   public render(cards: CardModel[]): void {
     this.synchronizeCards(cards);
-
     this.layoutCards();
   }
 
   public layout(screenWidth: number, screenHeight: number): void {
-    this.container.position.set(screenWidth / 2, screenHeight);
-
+    this._container.position.set(screenWidth / 2, screenHeight);
     this.layoutCards();
   }
 
@@ -33,9 +34,13 @@ export class PixiDeckRenderer implements DeckRenderer {
     }
     this._cards.clear();
 
-    this.container.destroy({
+    this._container.destroy({
       children: true,
     });
+  }
+
+  public getContainer(): Container {
+    return this._container;
   }
 
   private synchronizeCards(cards: CardModel[]): void {
@@ -51,15 +56,20 @@ export class PixiDeckRenderer implements DeckRenderer {
     }
 
     for (const card of cards) {
-      if (this._cards.has(card.getId())) {
+      const cardId = card.getId();
+      if (this._cards.has(cardId)) {
         continue;
       }
 
-      const cardRenderer = new PixiCardRenderer(card);
-      this._cards.set(card.getId(), cardRenderer);
-      this.container.addChild(cardRenderer.container);
+      const cardRenderer = new PixiCardRenderer(card, this.handleCardDrop);
+      this._cards.set(cardId, cardRenderer);
+      this._container.addChild(cardRenderer.getContainer());
     }
   }
+
+  private handleCardDrop = (event: CardDropEvent): void => {
+    this._onCardDrop?.(event);
+  };
 
   private layoutCards(): void {
     const cards = Array.from(this._cards.values());
