@@ -1,11 +1,13 @@
 import { Container, Graphics, type FederatedPointerEvent } from 'pixi.js';
 import type { CardModel } from '@game/core';
 import type {
+  AnimationBounds,
   CardDropHandler,
   CardRenderer,
   CardRendererOptions,
   CardTransform,
 } from '../../interfaces';
+import { PixiAnimationController } from '../animation';
 
 const DEFAULT_CARD_SCALE = 1;
 const DEFAULT_CARD_WIDTH = 180;
@@ -15,11 +17,16 @@ const DEFAULT_CARD_RADIUS = 16;
 const CARD_HOVER_SCALE = 1.4;
 const CARD_ACTIVE_Z_INDEX = 1000;
 
+const CARD_HOVER_ANIMATION_DURATION = 180;
+const CARD_DRAG_ANIMATION_DURATION = 100;
+const CARD_LAYOUT_ANIMATION_DURATION = 250;
+
 export class PixiCardRenderer implements CardRenderer {
   private readonly _card: CardModel;
   private readonly _onDrop?: CardDropHandler;
   private readonly _container = new Container();
   private readonly _graphics = new Graphics();
+  private readonly _animation: PixiAnimationController;
   private _layoutTransform: CardTransform = {
     x: 0,
     y: 0,
@@ -37,6 +44,8 @@ export class PixiCardRenderer implements CardRenderer {
     this._card = card;
     this._onDrop = onDrop;
 
+    this._animation = new PixiAnimationController(this.handleAnimationUpdate);
+
     this.draw(options);
 
     this._container.addChild(this._graphics);
@@ -46,15 +55,18 @@ export class PixiCardRenderer implements CardRenderer {
   public setTransform(transform: CardTransform): void {
     this._layoutTransform = {
       ...transform,
-      scale: transform.scale ?? 1,
+      scale: transform.scale ?? DEFAULT_CARD_SCALE,
     };
 
-    if (!this._isHovered && !this._isDragging) {
-      this.applyTransform(this._layoutTransform);
+    if (this._isHovered || this._isDragging) {
+      return;
     }
+
+    this.animateTo(this._layoutTransform, CARD_LAYOUT_ANIMATION_DURATION);
   }
 
   public destroy(): void {
+    this._animation.destroy();
     this.removePointerEvents();
     this._container.destroy({
       children: true,
@@ -96,11 +108,14 @@ export class PixiCardRenderer implements CardRenderer {
     this._isHovered = true;
 
     this._container.zIndex = CARD_ACTIVE_Z_INDEX;
-    this.applyTransform({
-      ...this._layoutTransform,
-      rotation: 0,
-      scale: CARD_HOVER_SCALE,
-    });
+    this.animateTo(
+      {
+        ...this._layoutTransform,
+        rotation: 0,
+        scale: CARD_HOVER_SCALE,
+      },
+      CARD_HOVER_ANIMATION_DURATION,
+    );
   };
 
   private handlePointerOut = (): void => {
@@ -109,8 +124,8 @@ export class PixiCardRenderer implements CardRenderer {
     }
 
     this._isHovered = false;
-    this._container.zIndex = 0;
-    this.applyTransform(this._layoutTransform);
+    this._container.zIndex = DEFAULT_CARD_SCALE;
+    this.animateTo(this._layoutTransform, CARD_HOVER_ANIMATION_DURATION);
   };
 
   private handlePointerDown = (event: FederatedPointerEvent): void => {
@@ -122,8 +137,14 @@ export class PixiCardRenderer implements CardRenderer {
     this._dragOffset.y = event.global.y - position.y;
 
     this._container.zIndex = CARD_ACTIVE_Z_INDEX;
-    this._container.rotation = 0;
-    this._container.scale.set(DEFAULT_CARD_SCALE);
+    this.animateTo(
+      {
+        ...this._layoutTransform,
+        rotation: 0,
+        scale: DEFAULT_CARD_SCALE,
+      },
+      CARD_DRAG_ANIMATION_DURATION,
+    );
 
     event.stopPropagation();
   };
@@ -156,14 +177,32 @@ export class PixiCardRenderer implements CardRenderer {
       },
     });
 
-    this.applyTransform(this._layoutTransform);
+    this.animateTo(this._layoutTransform, CARD_LAYOUT_ANIMATION_DURATION);
   };
 
-  private applyTransform(transform: CardTransform): void {
-    this._container.position.set(transform.x, transform.y);
-    this._container.rotation = transform.rotation;
-    this._container.scale.set(transform.scale ?? 1);
+  private animateTo(transform: CardTransform, duration: number): void {
+    const current: AnimationBounds = {
+      x: this._container.x,
+      y: this._container.y,
+      rotation: this._container.rotation,
+      scale: this._container.scale.x,
+    };
+
+    const target: AnimationBounds = {
+      x: transform.x,
+      y: transform.y,
+      rotation: transform.rotation,
+      scale: transform.scale ?? DEFAULT_CARD_SCALE,
+    };
+
+    this._animation.animate(current, target, duration);
   }
+
+  private handleAnimationUpdate = (values: AnimationBounds): void => {
+    this._container.position.set(values.x, values.y);
+    this._container.rotation = values.rotation;
+    this._container.scale.set(values.scale);
+  };
 
   private draw(options?: CardRendererOptions): void {
     const width = options?.width ?? DEFAULT_CARD_WIDTH;
