@@ -1,18 +1,18 @@
 import { Container } from 'pixi.js';
 import type { CardModel } from '@game/core';
 import type { CardDropEvent, CardDropHandler, CardTransform, DeckRenderer } from '../../interfaces';
-import { PixiCardRenderer } from '../card-renderer';
+import { PixiCardRenderer } from '../card';
 
 export interface PixiDeckRendererOptions {
   onCardDrop?: CardDropHandler;
 }
 
 export class PixiDeckRenderer implements DeckRenderer {
+  private readonly _cards = new Map<string, PixiCardRenderer>();
+  private readonly _onCardDrop?: CardDropHandler;
   private readonly _container = new Container({
     sortableChildren: true,
   });
-  private readonly _cards = new Map<string, PixiCardRenderer>();
-  private readonly _onCardDrop?: CardDropHandler;
 
   public constructor(options?: PixiDeckRendererOptions) {
     this._onCardDrop = options?.onCardDrop;
@@ -95,13 +95,13 @@ export class PixiDeckRenderer implements DeckRenderer {
     spacing: number,
   ): CardTransform {
     const x = startX + index * spacing;
-    const normalized = cardCount === 1 ? 0 : index / (cardCount - 1);
-    const centered = normalized - 0.5;
+    const positionRatio = cardCount === 1 ? 0.5 : index / (cardCount - 1);
+    const distanceFromCenter = positionRatio - 0.5;
 
     return {
       x,
-      y: -220 + centered * centered * 120,
-      rotation: centered * 0.6,
+      y: -220 + distanceFromCenter ** 2 * 120,
+      rotation: distanceFromCenter * 0.6,
     };
   }
 }

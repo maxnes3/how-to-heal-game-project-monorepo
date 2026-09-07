@@ -1,3 +1,3 @@
-export * from './card-renderer';
-export * from './deck-renderer';
-export * from './game-renderer';
+export * from './card';
+export * from './deck';
+export * from './game';

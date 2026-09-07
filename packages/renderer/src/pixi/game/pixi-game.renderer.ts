@@ -7,8 +7,8 @@ import type {
   GameRenderer,
   GameRendererOptions,
 } from '../../interfaces';
-import { PixiDeckRenderer } from '../deck-renderer';
-import { PixiExecuteZoneRenderer } from '../execute-zone-renderer';
+import { PixiDeckRenderer } from '../deck';
+import { PixiExecuteZoneRenderer } from '../execute-zone';
 
 export class PixiGameRenderer implements GameRenderer {
   private readonly _app = new Application();

@@ -7,28 +7,27 @@ import type {
   CardTransform,
 } from '../../interfaces';
 
+const DEFAULT_CARD_SCALE = 1;
 const DEFAULT_CARD_WIDTH = 180;
 const DEFAULT_CARD_HEIGHT = 252;
 const DEFAULT_CARD_RADIUS = 16;
+
+const CARD_HOVER_SCALE = 1.4;
+const CARD_ACTIVE_Z_INDEX = 1000;
 
 export class PixiCardRenderer implements CardRenderer {
   private readonly _card: CardModel;
   private readonly _onDrop?: CardDropHandler;
   private readonly _container = new Container();
   private readonly _graphics = new Graphics();
-  private _currentTransform: CardTransform = {
-    x: 0,
-    y: 0,
-    rotation: 0,
-    scale: 1,
-  };
-  private _initialTransform: CardTransform = {
+  private _layoutTransform: CardTransform = {
     x: 0,
     y: 0,
     rotation: 0,
     scale: 1,
   };
   private _isDragging = false;
+  private _isHovered = false;
   private _dragOffset = {
     x: 0,
     y: 0,
@@ -45,20 +44,14 @@ export class PixiCardRenderer implements CardRenderer {
   }
 
   public setTransform(transform: CardTransform): void {
-    const normalizedTransform: CardTransform = {
+    this._layoutTransform = {
       ...transform,
       scale: transform.scale ?? 1,
     };
 
-    this._currentTransform = normalizedTransform;
-
-    if (!this._isDragging) {
-      this._initialTransform = {
-        ...normalizedTransform,
-      };
+    if (!this._isHovered && !this._isDragging) {
+      this.applyTransform(this._layoutTransform);
     }
-
-    this.applyTransform(normalizedTransform);
   }
 
   public destroy(): void {
@@ -76,6 +69,9 @@ export class PixiCardRenderer implements CardRenderer {
     this._container.eventMode = 'static';
     this._container.cursor = 'pointer';
 
+    this._container.on('pointerover', this.handlePointerOver);
+    this._container.on('pointerout', this.handlePointerOut);
+
     this._container.on('pointerdown', this.handlePointerDown);
     this._container.on('globalpointermove', this.handlePointerMove);
     this._container.on('pointerup', this.handlePointerUp);
@@ -83,11 +79,39 @@ export class PixiCardRenderer implements CardRenderer {
   }
 
   private removePointerEvents(): void {
+    this._container.off('pointerover', this.handlePointerOver);
+    this._container.off('pointerout', this.handlePointerOut);
+
     this._container.off('pointerdown', this.handlePointerDown);
     this._container.off('globalpointermove', this.handlePointerMove);
     this._container.off('pointerup', this.handlePointerUp);
     this._container.off('pointerupoutside', this.handlePointerUp);
   }
+
+  private handlePointerOver = (): void => {
+    if (this._isDragging) {
+      return;
+    }
+
+    this._isHovered = true;
+
+    this._container.zIndex = CARD_ACTIVE_Z_INDEX;
+    this.applyTransform({
+      ...this._layoutTransform,
+      rotation: 0,
+      scale: CARD_HOVER_SCALE,
+    });
+  };
+
+  private handlePointerOut = (): void => {
+    if (this._isDragging) {
+      return;
+    }
+
+    this._isHovered = false;
+    this._container.zIndex = 0;
+    this.applyTransform(this._layoutTransform);
+  };
 
   private handlePointerDown = (event: FederatedPointerEvent): void => {
     this._isDragging = true;
@@ -97,8 +121,9 @@ export class PixiCardRenderer implements CardRenderer {
     this._dragOffset.x = event.global.x - position.x;
     this._dragOffset.y = event.global.y - position.y;
 
-    this._container.zIndex = 1000;
+    this._container.zIndex = CARD_ACTIVE_Z_INDEX;
     this._container.rotation = 0;
+    this._container.scale.set(DEFAULT_CARD_SCALE);
 
     event.stopPropagation();
   };
@@ -131,7 +156,7 @@ export class PixiCardRenderer implements CardRenderer {
       },
     });
 
-    this.applyTransform(this._initialTransform);
+    this.applyTransform(this._layoutTransform);
   };
 
   private applyTransform(transform: CardTransform): void {
