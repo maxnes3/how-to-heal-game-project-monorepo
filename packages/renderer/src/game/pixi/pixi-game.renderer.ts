@@ -1,14 +1,10 @@
 import { Application, type PointData } from 'pixi.js';
 import type { CardModel, DeckState } from '@game/core';
 import type { WritableStore, Unsubscribe } from '@game/store';
-import type {
-  GameRenderer,
-  GameRendererOptions,
-  ExecuteZoneBounds,
-  CardDropEvent,
-} from '../../interfaces';
-import { PixiDeckRenderer } from '../deck';
-import { PixiExecuteZoneRenderer } from '../execute-zone';
+import { PixiDeckRenderer } from '../../deck';
+import type { CardDropEvent } from '../../card';
+import { PixiExecuteZoneRenderer, type ExecuteZoneBounds } from '../../execute-zone';
+import type { GameRenderer, GameRendererOptions } from '../interfaces';
 
 export class PixiGameRenderer implements GameRenderer {
   private readonly _app = new Application();

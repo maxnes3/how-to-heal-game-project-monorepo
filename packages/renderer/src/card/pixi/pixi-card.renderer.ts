@@ -1,13 +1,12 @@
 import { Container, Graphics, type FederatedPointerEvent } from 'pixi.js';
 import type { CardModel } from '@game/core';
+import { type AnimationBounds, PixiAnimationController } from '../../animation';
 import type {
-  AnimationBounds,
   CardDropHandler,
   CardRenderer,
   CardRendererOptions,
   CardTransform,
-} from '../../interfaces';
-import { PixiAnimationController } from '../animation';
+} from '../interfaces';
 
 const DEFAULT_CARD_SCALE = 1;
 const DEFAULT_CARD_WIDTH = 180;

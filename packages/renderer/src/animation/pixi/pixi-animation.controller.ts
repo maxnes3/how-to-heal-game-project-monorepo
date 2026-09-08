@@ -1,5 +1,5 @@
 import { Ticker } from 'pixi.js';
-import type { AnimationBounds, AnimationController } from '../../interfaces';
+import type { AnimationBounds, AnimationController } from '../interfaces';
 
 export class PixiAnimationController implements AnimationController {
   private readonly _onUpdate: (values: AnimationBounds) => void;

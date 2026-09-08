@@ -1,6 +1,5 @@
 import { Container, Graphics } from 'pixi.js';
-
-import type { ExecuteZoneBounds, ExecuteZoneRenderer } from '../../interfaces';
+import type { ExecuteZoneBounds, ExecuteZoneRenderer } from '../interfaces';
 
 const BORDER_COLOR = 0xffffff;
 const BORDER_WIDTH = 3;

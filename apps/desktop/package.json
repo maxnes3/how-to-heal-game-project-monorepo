@@ -1,5 +1,6 @@
 {
   "name": "@game/desktop",
+  "productName": "How To Heal?!",
   "version": "1.0.0",
   "private": true,
   "main": ".vite/build/main.js",

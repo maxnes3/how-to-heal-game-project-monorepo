@@ -1,7 +1,12 @@
 import { Container } from 'pixi.js';
 import type { CardModel } from '@game/core';
-import type { CardDropEvent, CardDropHandler, CardTransform, DeckRenderer } from '../../interfaces';
-import { PixiCardRenderer } from '../card';
+import {
+  PixiCardRenderer,
+  type CardDropEvent,
+  type CardDropHandler,
+  type CardTransform,
+} from '../../card';
+import type { DeckRenderer } from '../interfaces';
 
 export interface PixiDeckRendererOptions {
   onCardDrop?: CardDropHandler;
