@@ -1,5 +1,5 @@
 import { Application, type PointData } from 'pixi.js';
-import type { CardModel, DeckState } from '@game/core';
+import type { CardModel, GameState } from '@game/core';
 import type { WritableStore, Unsubscribe } from '@game/store';
 import { PixiDeckRenderer } from '../../deck';
 import type { CardDropEvent, CardDropResult } from '../../card';
@@ -8,7 +8,7 @@ import type { GameRenderer, GameRendererOptions } from '../interfaces';
 
 export class PixiGameRenderer implements GameRenderer {
   private readonly _app = new Application();
-  private readonly _deckStore: WritableStore<DeckState>;
+  private readonly _gameStore: WritableStore<GameState>;
   private readonly _deckRenderer: PixiDeckRenderer;
   private readonly _executeZoneRenderer = new PixiExecuteZoneRenderer();
   private _initPromise: Promise<void> | null = null;
@@ -17,7 +17,7 @@ export class PixiGameRenderer implements GameRenderer {
   private _unsubscribe: Unsubscribe | null = null;
 
   public constructor(options: GameRendererOptions) {
-    this._deckStore = options.deckStore;
+    this._gameStore = options.gameStore;
     this._deckRenderer = new PixiDeckRenderer({
       onCardDrop: this.handleCardDrop,
     });
@@ -88,14 +88,17 @@ export class PixiGameRenderer implements GameRenderer {
   }
 
   private renderInitialState(): void {
-    const state = this._deckStore.getState();
-    this._deckRenderer.render(state.handCards);
+    const state = this._gameStore.getState();
+    this._deckRenderer.render(state.deck.handCards);
   }
 
   private subscribeToState(): void {
-    this._unsubscribe = this._deckStore.subscribe((state) => {
-      this._deckRenderer.render(state.handCards);
-    });
+    this._unsubscribe = this._gameStore.subscribe(
+      (state) => state.deck.handCards,
+      (handCards) => {
+        this._deckRenderer.render(handCards);
+      },
+    );
   }
 
   private initializeResizeObserver(container: HTMLElement): void {
@@ -131,11 +134,14 @@ export class PixiGameRenderer implements GameRenderer {
   };
 
   private executeCard(card: CardModel): void {
-    this._deckStore.setState((previousState) => ({
+    this._gameStore.setState((previousState) => ({
       ...previousState,
-      handCards: previousState.handCards.filter(
-        (currentCard) => currentCard.getId() !== card.getId(),
-      ),
+      deck: {
+        ...previousState.deck,
+        handCards: previousState.deck.handCards.filter(
+          (currentCard) => currentCard.getId() !== card.getId(),
+        ),
+      },
     }));
   }
 

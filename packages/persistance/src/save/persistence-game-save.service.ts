@@ -1,6 +1,6 @@
-import type { DeckState } from '@game/core';
+import type { GameState } from '@game/core';
 import type { PersistanceSaveStorage } from '../storage';
-import type { FormatedGameSave, PersistedSaveSlot } from './models';
+import type { RestoredGameSave, PersistedSaveSlot } from './models';
 import { PersistedGameSaveMapper, type CreatePersistedGameSaveOptions } from './mappers';
 
 export class PersistenceGameSaveService {
@@ -10,7 +10,7 @@ export class PersistenceGameSaveService {
     this._mapper = new PersistedGameSaveMapper();
   }
 
-  public async save(state: DeckState, options: CreatePersistedGameSaveOptions): Promise<void> {
+  public async save(state: GameState, options: CreatePersistedGameSaveOptions): Promise<void> {
     const existingSave = await this._storage.get(options.slot);
 
     const save = this._mapper.toPersistedGameSave(state, {
@@ -21,13 +21,13 @@ export class PersistenceGameSaveService {
     await this._storage.set(options.slot, save);
   }
 
-  public async load(slot: PersistedSaveSlot): Promise<FormatedGameSave | null> {
+  public async load(slot: PersistedSaveSlot): Promise<RestoredGameSave | null> {
     const loadedSave = await this._storage.get(slot);
     if (!loadedSave) {
       return null;
     }
 
-    return this._mapper.toFormatedGameState(loadedSave);
+    return this._mapper.toRestoredGameSave(loadedSave);
   }
 
   public async delete(slot: PersistedSaveSlot): Promise<void> {

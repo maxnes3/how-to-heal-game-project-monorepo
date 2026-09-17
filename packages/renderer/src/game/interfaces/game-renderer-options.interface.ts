@@ -1,6 +1,6 @@
 import type { WritableStore } from '@game/store';
-import type { DeckState } from '@game/core';
+import type { GameState } from '@game/core';
 
 export interface GameRendererOptions {
-  deckStore: WritableStore<DeckState>;
+  gameStore: WritableStore<GameState>;
 }

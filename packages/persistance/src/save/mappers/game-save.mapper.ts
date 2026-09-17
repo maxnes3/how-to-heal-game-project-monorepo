@@ -1,5 +1,5 @@
-import { CardModel, type DeckState } from '@game/core';
-import type { FormatedGameSave, PersistedGameSave, PersistedSaveSlot } from '../models';
+import { CardModel, type GameState } from '@game/core';
+import type { PersistedGameSave, PersistedSaveSlot, RestoredGameSave } from '../models';
 
 export interface CreatePersistedGameSaveOptions {
   slot: PersistedSaveSlot;
@@ -9,7 +9,7 @@ export interface CreatePersistedGameSaveOptions {
 
 export class PersistedGameSaveMapper {
   public toPersistedGameSave(
-    state: DeckState,
+    state: GameState,
     options: CreatePersistedGameSaveOptions,
   ): PersistedGameSave {
     const now = new Date().toISOString();
@@ -17,21 +17,25 @@ export class PersistedGameSaveMapper {
     return {
       slot: options.slot,
       screen: options.screen,
-      deck: {
-        handCards: state.handCards.map((card) => ({
-          id: card.getId(),
-        })),
+      game: {
+        deck: {
+          handCards: state.deck.handCards.map((card) => ({
+            id: card.getId(),
+          })),
+        },
       },
       createdAt: options.createdAt ?? now,
       updatedAt: now,
     };
   }
 
-  public toFormatedGameState(save: PersistedGameSave): FormatedGameSave {
+  public toRestoredGameSave(save: PersistedGameSave): RestoredGameSave {
     return {
       screen: save.screen,
-      deck: {
-        handCards: save.deck.handCards.map((card) => new CardModel(card.id)),
+      game: {
+        deck: {
+          handCards: save.game.deck.handCards.map((card) => new CardModel(card.id)),
+        },
       },
       createdAt: save.createdAt,
       updatedAt: save.updatedAt,

@@ -1,4 +1,4 @@
-import type { FormatedGameSave, PersistedSaveSlot } from '@game/persistance';
+import type { RestoredGameSave, PersistedSaveSlot } from '@game/persistance';
 import { Template } from '../../template';
 import { Text } from '../../text';
 import { Button } from '../../button';
@@ -6,7 +6,7 @@ import styles from './GameSaveTemplate.module.css';
 
 interface Props {
   slot: PersistedSaveSlot;
-  save: FormatedGameSave | null;
+  save: RestoredGameSave | null;
   onSave: (slot: PersistedSaveSlot) => void;
   onLoad: (slot: PersistedSaveSlot) => void;
   onDelete: (slot: PersistedSaveSlot) => void;

@@ -1,1 +1,1 @@
-export * from './persisted-game-save.mapper.js';
+export * from './game-save.mapper.js';

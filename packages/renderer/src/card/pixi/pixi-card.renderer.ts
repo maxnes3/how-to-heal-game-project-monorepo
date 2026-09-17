@@ -40,9 +40,9 @@ export class PixiCardRenderer implements CardRenderer {
     y: 0,
   };
 
-  public constructor(card: CardModel, onDrop?: CardDropHandler, options?: CardRendererOptions) {
-    this._card = card;
-    this._onDrop = onDrop;
+  public constructor(options: CardRendererOptions) {
+    this._card = options.card;
+    this._onDrop = options.onDrop;
 
     this._animation = new PixiAnimationController(this.handleAnimationUpdate);
 

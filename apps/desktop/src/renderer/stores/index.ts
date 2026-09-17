@@ -1,1 +1,1 @@
-export * from './deck.store';
+export * from './game.store';

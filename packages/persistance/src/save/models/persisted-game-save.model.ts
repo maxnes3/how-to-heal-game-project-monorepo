@@ -1,17 +1,21 @@
 import type { PersistedSaveSlot } from './persisted-save-slot.enum.js';
 
-export interface PersistedGameSaveCard {
-  id: string;
-}
-
-export interface PersistedGameSaveDeck {
-  handCards: Array<PersistedGameSaveCard>;
-}
-
 export interface PersistedGameSave {
   slot: PersistedSaveSlot;
   screen: string;
-  deck: PersistedGameSaveDeck;
+  game: PersistedGameState;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface PersistedGameState {
+  deck: PersistedGameDeck;
+}
+
+export interface PersistedGameDeck {
+  handCards: Array<PersistedGameCard>;
+}
+
+export interface PersistedGameCard {
+  id: string;
 }

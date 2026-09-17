@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { PersistedSaveSlot, type FormatedGameSave } from '@game/persistance';
+import { PersistedSaveSlot, type RestoredGameSave } from '@game/persistance';
 import { electronGameSaveService } from '@app/persistence/service';
 import { Article } from '../../article';
 import { GameSaveTemplate } from '../template';
@@ -12,7 +12,7 @@ const SAVE_SLOTS: PersistedSaveSlot[] = [
   PersistedSaveSlot.THIRD,
 ];
 
-type SavesBySlot = Record<PersistedSaveSlot, FormatedGameSave | null>;
+type SavesBySlot = Record<PersistedSaveSlot, RestoredGameSave | null>;
 
 const createInitialSavesState = (): SavesBySlot => {
   return {
@@ -24,7 +24,7 @@ const createInitialSavesState = (): SavesBySlot => {
 
 interface Props {
   onCreateSaveSlot: (slot: PersistedSaveSlot) => Promise<void>;
-  onLoadSaveSlot: (save: FormatedGameSave) => Promise<void> | void;
+  onLoadSaveSlot: (save: RestoredGameSave) => Promise<void> | void;
   onBack: VoidFunction;
 }
 

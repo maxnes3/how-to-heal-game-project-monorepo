@@ -1,4 +1,9 @@
+import type { CardModel } from '@game/core';
+import type { CardDropHandler } from './card-drop-event.interface.js';
+
 export interface CardRendererOptions {
-  width: number;
-  height: number;
+  card: CardModel;
+  onDrop?: CardDropHandler;
+  width?: number;
+  height?: number;
 }

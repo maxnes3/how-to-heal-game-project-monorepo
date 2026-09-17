@@ -7,11 +7,7 @@ import {
   type CardDropResult,
   type CardTransform,
 } from '../../card';
-import type { DeckRenderer } from '../interfaces';
-
-export interface PixiDeckRendererOptions {
-  onCardDrop?: CardDropHandler;
-}
+import type { DeckRenderer, DeckRendererOptions } from '../interfaces';
 
 export class PixiDeckRenderer implements DeckRenderer {
   private readonly _cards = new Map<string, PixiCardRenderer>();
@@ -20,7 +16,7 @@ export class PixiDeckRenderer implements DeckRenderer {
     sortableChildren: true,
   });
 
-  public constructor(options?: PixiDeckRendererOptions) {
+  public constructor(options?: DeckRendererOptions) {
     this._onCardDrop = options?.onCardDrop;
   }
 
@@ -67,7 +63,10 @@ export class PixiDeckRenderer implements DeckRenderer {
         continue;
       }
 
-      const cardRenderer = new PixiCardRenderer(card, this.handleCardDrop);
+      const cardRenderer = new PixiCardRenderer({
+        card,
+        onDrop: this.handleCardDrop,
+      });
       this._cards.set(cardId, cardRenderer);
       this._container.addChild(cardRenderer.getContainer());
     }
