@@ -5,14 +5,10 @@ A cross-platform game project built as a TypeScript monorepo.
 ## 🏗 Architecture
 
 ```mermaid
-config:
-  flowchart:
-    curve: linear
+%%{init: {"flowchart": {"curve": "linear"}}}%%
 flowchart TB
-    %% Applications
     Desktop["🏰 @game/desktop"]
 
-    %% Internal packages
     Renderer["🐉 @game/renderer"]
     Core["👑 @game/core"]
     Store["📜 @game/store"]
@@ -20,13 +16,11 @@ flowchart TB
     Theme["🦄 @game/theme"]
     Persistance["💾 @game/persistance"]
 
-    %% External dependencies
     React["⚛️ React"]
     Electron["⚡ Electron"]
     Pixi["🎨 PixiJS"]
     I18next["🌍 i18next"]
 
-    %% Desktop
     Desktop --> Renderer
     Desktop --> Store
     Desktop --> I18n
@@ -35,16 +29,13 @@ flowchart TB
     Desktop --> React
     Desktop --> Electron
 
-    %% Renderer
     Renderer --> Core
     Renderer --> Store
     Renderer --> I18n
     Renderer --> Pixi
 
-    %% Store
     Store --> Core
 
-    %% I18n
     I18n --> I18next
 ```
 
