@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Article, Text, SettingsArticle } from '@app/renderer/components';
 import { AppRoutesEnum } from '@app/renderer/routes';
 
-const SettingsScreen = () => {
+const SettingsScreen: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useTranslation('ui');
 

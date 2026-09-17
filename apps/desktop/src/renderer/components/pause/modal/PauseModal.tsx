@@ -5,24 +5,25 @@ import { AppRoutesEnum } from '@app/renderer/routes';
 import { ModalRoot } from '../../modal';
 import { Button } from '../../button';
 import { Text } from '../../text';
+import { useCallback } from 'react';
 
-const MenuModal = () => {
+const MenuModal: React.FC = () => {
   const { modal, openModal, closeModal } = useModal();
   const navigate = useNavigate();
   const { t } = useTranslation('ui');
 
-  const handleResumeClick = () => {
+  const handleResumeClick = useCallback(() => {
     closeModal();
-  };
+  }, []);
 
-  const handleOpenSettingsClick = () => {
+  const handleOpenSettingsClick = useCallback(() => {
     openModal(ModalEnum.SETTINGS);
-  };
+  }, []);
 
-  const handleReturnToMainMenuClick = () => {
+  const handleReturnToMainMenuClick = useCallback(() => {
     navigate(AppRoutesEnum.MAIN);
     closeModal();
-  };
+  }, []);
 
   return (
     <ModalRoot isOpen={modal === ModalEnum.PAUSE}>

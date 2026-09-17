@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { HashRouter } from 'react-router';
-import { initializeDesktopI18n } from './renderer/i18n/initialize';
+import { initializeDesktopI18n } from './renderer/i18n';
 import App from './renderer/App';
 
 const root = document.getElementById('root');

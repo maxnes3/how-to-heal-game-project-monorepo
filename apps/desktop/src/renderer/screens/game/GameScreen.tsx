@@ -1,7 +1,7 @@
 import React from 'react';
 import { GameContainer, OpenPauseModalButton } from '@app/renderer/components';
 
-const GameScreen = () => {
+const GameScreen: React.FC = () => {
   return (
     <>
       <GameContainer />

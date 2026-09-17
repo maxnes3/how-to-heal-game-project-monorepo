@@ -2,7 +2,7 @@ import { Application, type PointData } from 'pixi.js';
 import type { CardModel, DeckState } from '@game/core';
 import type { WritableStore, Unsubscribe } from '@game/store';
 import { PixiDeckRenderer } from '../../deck';
-import type { CardDropEvent } from '../../card';
+import type { CardDropEvent, CardDropResult } from '../../card';
 import { PixiExecuteZoneRenderer, type ExecuteZoneBounds } from '../../execute-zone';
 import type { GameRenderer, GameRendererOptions } from '../interfaces';
 
@@ -118,14 +118,16 @@ export class PixiGameRenderer implements GameRenderer {
     this._deckRenderer.layout(width, height);
   }
 
-  private handleCardDrop = (event: CardDropEvent): void => {
+  private handleCardDrop = (event: CardDropEvent): CardDropResult => {
     const executeZone = this.getExecuteZoneBounds();
+
     if (!this.isPointInsideBounds(event.position, executeZone)) {
-      this._deckRenderer.render(this._deckStore.getState().handCards);
-      return;
+      return 'rejected';
     }
 
     this.executeCard(event.card);
+
+    return 'accepted';
   };
 
   private executeCard(card: CardModel): void {

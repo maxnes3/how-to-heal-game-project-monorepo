@@ -3,6 +3,7 @@ import { createContext } from 'react';
 export enum ModalEnum {
   PAUSE = 'pause',
   SETTINGS = 'settings',
+  CONFIRM = 'confirm',
 }
 
 export interface ModalContextValue {

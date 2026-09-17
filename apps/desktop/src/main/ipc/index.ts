@@ -1,7 +1,1 @@
-import { app, ipcMain } from 'electron';
-
-export const registerIpcHandlers = (): void => {
-  ipcMain.on('app:quit', () => {
-    app.quit();
-  });
-};
+export * from './register-ipc-handlers';

@@ -26,6 +26,7 @@ export class PixiCardRenderer implements CardRenderer {
   private readonly _container = new Container();
   private readonly _graphics = new Graphics();
   private readonly _animation: PixiAnimationController;
+  private _destroyed = false;
   private _layoutTransform: CardTransform = {
     x: 0,
     y: 0,
@@ -65,6 +66,7 @@ export class PixiCardRenderer implements CardRenderer {
   }
 
   public destroy(): void {
+    this._destroyed = true;
     this._animation.destroy();
     this.removePointerEvents();
     this._container.destroy({
@@ -168,18 +170,25 @@ export class PixiCardRenderer implements CardRenderer {
     this._container.zIndex = 0;
 
     const globalPosition = this._container.getGlobalPosition();
-    this._onDrop?.({
-      card: this._card,
-      position: {
-        x: globalPosition.x,
-        y: globalPosition.y,
-      },
-    });
+    const result =
+      this._onDrop?.({
+        card: this._card,
+        position: {
+          x: globalPosition.x,
+          y: globalPosition.y,
+        },
+      }) ?? 'rejected';
 
-    this.animateTo(this._layoutTransform, CARD_LAYOUT_ANIMATION_DURATION);
+    if (result === 'rejected' && !this._destroyed) {
+      this.animateTo(this._layoutTransform, CARD_LAYOUT_ANIMATION_DURATION);
+    }
   };
 
   private animateTo(transform: CardTransform, duration: number): void {
+    if (this._destroyed) {
+      return;
+    }
+
     const current: AnimationBounds = {
       x: this._container.x,
       y: this._container.y,
@@ -198,6 +207,10 @@ export class PixiCardRenderer implements CardRenderer {
   }
 
   private handleAnimationUpdate = (values: AnimationBounds): void => {
+    if (this._destroyed) {
+      return;
+    }
+
     this._container.position.set(values.x, values.y);
     this._container.rotation = values.rotation;
     this._container.scale.set(values.scale);

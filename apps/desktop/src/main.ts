@@ -3,6 +3,7 @@ import started from 'electron-squirrel-startup';
 import { registerIpcHandlers } from './main/ipc';
 import { createMainWindow } from './main/window';
 import { registerKeyboardShortcuts } from './main/keyboard-shortcuts';
+import { registerGameSaveIpcHandlers } from './persistence/ipc';
 
 if (started) {
   app.quit();
@@ -10,6 +11,7 @@ if (started) {
 
 const bootstrap = (): void => {
   registerIpcHandlers();
+  registerGameSaveIpcHandlers();
   const mainWindow = createMainWindow();
   registerKeyboardShortcuts(mainWindow);
 };

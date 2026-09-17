@@ -7,7 +7,7 @@ interface Props {
 }
 
 const Article: React.FC<Props> = ({ className, children }) => {
-  return <div className={classNames(styles.article, className)}>{children}</div>;
+  return <article className={classNames(styles.article, className)}>{children}</article>;
 };
 
 export default Article;

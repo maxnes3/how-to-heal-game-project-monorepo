@@ -4,6 +4,7 @@ import {
   PixiCardRenderer,
   type CardDropEvent,
   type CardDropHandler,
+  type CardDropResult,
   type CardTransform,
 } from '../../card';
 import type { DeckRenderer } from '../interfaces';
@@ -72,8 +73,8 @@ export class PixiDeckRenderer implements DeckRenderer {
     }
   }
 
-  private handleCardDrop = (event: CardDropEvent): void => {
-    this._onCardDrop?.(event);
+  private handleCardDrop = (event: CardDropEvent): CardDropResult => {
+    return this._onCardDrop?.(event) ?? 'rejected';
   };
 
   private layoutCards(): void {

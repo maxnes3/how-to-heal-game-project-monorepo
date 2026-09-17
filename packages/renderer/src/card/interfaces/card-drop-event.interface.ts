@@ -8,4 +8,6 @@ export interface CardDropEvent {
   };
 }
 
-export type CardDropHandler = (event: CardDropEvent) => void;
+export type CardDropResult = 'accepted' | 'rejected';
+
+export type CardDropHandler = (event: CardDropEvent) => CardDropResult;
