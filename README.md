@@ -7,30 +7,40 @@ A cross-platform game project built as a TypeScript monorepo.
 ```mermaid
 %%{init: {"flowchart": {"curve": "linear"}}}%%
 flowchart TB
+
     Desktop["🏰 @game/desktop"]
 
-    Renderer["🐉 @game/renderer"]
-    Core["👑 @game/core"]
-    Store["📜 @game/store"]
-    I18n["🚩 @game/i18n"]
-    Theme["🦄 @game/theme"]
-    Persistance["💾 @game/persistance"]
+    subgraph APPLICATION["Application Layer"]
+        Renderer["🐉 @game/renderer"]
+    end
 
-    React["⚛️ React"]
-    Electron["⚡ Electron"]
-    Pixi["🎨 PixiJS"]
-    I18next["🌍 i18next"]
+    subgraph INFRASTRUCTURE["Infrastructure / State"]
+        Store["📜 @game/store"]
+        Persistance["💾 @game/persistance"]
+        I18n["🚩 @game/i18n"]
+        Theme["🦄 @game/theme"]
+    end
+
+    Core["👑 @game/core"]
+
+    subgraph EXTERNAL["External Dependencies"]
+        React["⚛️ React"]
+        Electron["⚡ Electron"]
+        Pixi["🎨 PixiJS"]
+        I18next["🌍 i18next"]
+    end
 
     Desktop --> Renderer
     Desktop --> Store
+    Desktop --> Persistance
     Desktop --> I18n
     Desktop --> Theme
-    Desktop --> Persistance
+
     Desktop --> React
     Desktop --> Electron
 
-    Renderer --> Core
     Renderer --> Store
+    Renderer --> Core
     Renderer --> I18n
     Renderer --> Pixi
 
